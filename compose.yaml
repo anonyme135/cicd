@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile_inline: |
-        FROM jenkins/jenkins:2.568
+        FROM jenkins/jenkins:2.568-jdk21
         RUN jenkins-plugin-cli --plugins workflow-aggregator git docker-workflow
     container_name: jenkins
     ports:
@@ -25,6 +25,16 @@ services:
     image: jenkins/agent:latest-jdk21
     container_name: jenkins-agent-2
     command: sleep infinity
+    networks:
+      - ci
+
+  jenkins-cli:
+    image: jenkins/jenkins:2.568-jdk21
+    container_name: jenkins-cli
+    profiles:
+      - tools
+    entrypoint: sleep
+    command: infinity
     networks:
       - ci
 
