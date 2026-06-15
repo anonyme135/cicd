@@ -43,13 +43,5 @@ pipeline {
                 sh 'pytest --cov . --cov-report xml'
             }
         }
-
-        stage('Build image') {
-            steps {
-                script {
-                    docker.build("water:${env.BUILD_NUMBER}")
-                }
-            }
-        }
     }
 }
