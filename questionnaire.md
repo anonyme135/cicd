@@ -46,3 +46,11 @@ Voici :
 
 FROM postgres:latest
 ENV POSTGRES_PASSWORD=mypassword
+
+
+
+
+# Etape 9
+
+Rundeck peux être utilisé pour lancer le déploiement après que Jenkins est construit l’image Docker.s
+Il peux aussi servir à faire des vérifications après le déploiement, comme regarder si le conteneur tourne bien ou lancer un rollback si ça ne marche pas.
