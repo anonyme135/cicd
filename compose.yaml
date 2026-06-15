@@ -4,13 +4,18 @@ services:
       context: .
       dockerfile_inline: |
         FROM jenkins/jenkins:2.568-jdk21
+        USER root
+        RUN apt-get update && apt-get install -y --no-install-recommends docker.io && rm -rf /var/lib/apt/lists/*
+        USER jenkins
         RUN jenkins-plugin-cli --plugins workflow-aggregator git docker-workflow
     container_name: jenkins
+    user: root
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - ci
 

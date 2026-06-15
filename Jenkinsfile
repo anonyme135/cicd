@@ -47,7 +47,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    docker.build("registry:5000/water:${env.BUILD_NUMBER}")
+                    docker.build("localhost:5000/water:${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -55,8 +55,18 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
-                    docker.image("registry:5000/water:${env.BUILD_NUMBER}").push()
+                    docker.image("localhost:5000/water:${env.BUILD_NUMBER}").push()
                 }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    docker rm -f water || true
+                    docker pull localhost:5000/water:${BUILD_NUMBER}
+                    docker run -d --name water -p 5001:5000 localhost:5000/water:${BUILD_NUMBER}
+                '''
             }
         }
     }
