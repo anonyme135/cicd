@@ -47,7 +47,15 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    docker.build("water:${env.BUILD_NUMBER}")
+                    docker.build("registry:5000/water:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Push image') {
+            steps {
+                script {
+                    docker.image("registry:5000/water:${env.BUILD_NUMBER}").push()
                 }
             }
         }
